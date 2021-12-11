@@ -1,12 +1,14 @@
 <template>
   <div class="col-large push-top">
     <h1>{{ thread.title }}</h1>
+
     <div class="post-list">
       <div class="post" v-for="postId in thread.posts" :key="postId">
         <div class="user-info">
-          <a href="#" class="user-name">
-            {{ userById(postById(postId).userId).name }}</a
-          >
+          <a href="#" class="user-name">{{
+            userById(postById(postId).userId).name
+          }}</a>
+
           <a href="#">
             <img
               class="avatar-large"
@@ -14,6 +16,7 @@
               alt=""
             />
           </a>
+
           <p class="desktop-only text-small">107 posts</p>
         </div>
 
@@ -32,6 +35,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import sourceData from "@/data.json";
 export default {
@@ -50,7 +54,7 @@ export default {
   },
   computed: {
     thread() {
-      return this.threads.find((thread) => thread.id === this.id);
+      return this.threads.find((thread) => thread.id === this.id); // also available under this.$route.params.id
     },
   },
   methods: {
@@ -58,7 +62,7 @@ export default {
       return this.posts.find((p) => p.id === postId);
     },
     userById(userId) {
-      return this.users.find((u) => u.id === userId);
+      return this.users.find((p) => p.id === userId);
     },
   },
 };
