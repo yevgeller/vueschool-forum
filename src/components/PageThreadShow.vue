@@ -1,5 +1,5 @@
 <template>
-  <div class="col-large push-top" v-if="thread">
+  <div class="col-large push-top">
     <h1>{{ thread.title }}</h1>
 
     <div class="post-list">
@@ -33,11 +33,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div v-else class="col-full text-center">
-    <h1>Thread not Found</h1>
-    <br />
-    <router-link :to="{ name: 'Home' }">Back to main page</router-link>
   </div>
 </template>
 
