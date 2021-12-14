@@ -1,20 +1,17 @@
 <template>
   <h1>Welcome to the Forum</h1>
-  <div>
-    <a href="http://localhost:8080/thread/-Ksjv9T5uc5wP1BH2g7O">a thread</a>
-  </div>
-  <ThreadList :threads="threads" />
+  <ForumList :forums="forums" />
 </template>
 <script>
 import sourceData from "@/data.json";
-import ThreadList from "@/components/ThreadList";
+import ForumList from "@/components/ForumList";
 export default {
   components: {
-    ThreadList,
+    ForumList,
   },
   data() {
     return {
-      threads: sourceData.threads,
+      forums: sourceData.forums,
     };
   },
 };
