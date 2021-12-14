@@ -25,18 +25,11 @@
       <div class="post-date text-faded">
         <app-date :timestamp="post.publishedAt"></app-date>
       </div>
-      <!-- <div
-        class="post-date text-faded"
-        :title="humanFriendlyDate(post.publishedAt)"
-      >
-        {{ diffForHumans(post.publishedAt) }}
-      </div> -->
     </div>
   </div>
 </template>
 <script>
 import sourceData from "@/data.json";
-import AppDate from "@/components/AppDate";
 
 export default {
   props: {
@@ -45,7 +38,6 @@ export default {
       type: Array,
     },
   },
-  components: { AppDate },
   data() {
     return {
       users: sourceData.users,
