@@ -4,7 +4,26 @@ import sourceData from "@/data";
 export default createStore({
   state: { ...sourceData, authId: "VXjpr2WHa8Ux4Bnggym8QFLdv5C3" },
   getters: {
-    authUser: (state) => state.users.find((user) => user.id === state.authId),
+    authUser: (state) => {
+      const user = state.users.find((user) => user.id === state.authId);
+      if (!user) return null;
+      return {
+        ...user,
+
+        get postsCount() {
+          return this.posts.length;
+        },
+        get posts() {
+          return state.posts.filter((post) => post.userId === user.id);
+        },
+        get threadsCount() {
+          return this.threads.length;
+        },
+        get threads() {
+          return state.threads.filter((post) => post.userId === user.id);
+        },
+      };
+    },
   },
   actions: {
     createPost(context, post) {
