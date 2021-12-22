@@ -13,7 +13,12 @@ const routes = [
     name: "Home",
     component: Home,
   },
-  { path: "/me", name: "Profile", component: Profile },
+  {
+    path: "/me",
+    name: "Profile",
+    component: Profile,
+    meta: { toTop: true, smoothScroll: true },
+  },
   {
     path: "/me/edit",
     name: "ProfileEdit",
@@ -58,4 +63,10 @@ const routes = [
 export default createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to) {
+    const scroll = {};
+    if (to.meta.toTop) scroll.top = 0;
+    if (to.meta.smoothScroll) scroll.behavior = "smooth";
+    return scroll;
+  },
 });
