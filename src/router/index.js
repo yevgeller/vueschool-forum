@@ -1,5 +1,6 @@
 import Home from "@/pages/Home";
 import ThreadShow from "@/pages/ThreadShow";
+import ThreadCreate from "@/pages/ThreadCreate";
 import Category from "@/pages/Category";
 import NotFound from "@/pages/NotFound";
 import Forum from "@/pages/Forum";
