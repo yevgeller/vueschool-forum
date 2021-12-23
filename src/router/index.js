@@ -1,6 +1,7 @@
 import Home from "@/pages/Home";
 import ThreadShow from "@/pages/ThreadShow";
 import ThreadCreate from "@/pages/ThreadCreate";
+import ThreadEdit from "@/pages/ThreadEdit";
 import Category from "@/pages/Category";
 import NotFound from "@/pages/NotFound";
 import Forum from "@/pages/Forum";
@@ -55,9 +56,15 @@ const routes = [
     },
   },
   {
-    path: "/form/:forumId/thread/create",
+    path: "/forum/:forumId/thread/create",
     name: "ThreadCreate",
     component: ThreadCreate,
+    props: true,
+  },
+  {
+    path: "/thread/:id/edit",
+    name: "ThreadEdit",
+    component: ThreadEdit,
     props: true,
   },
   {
