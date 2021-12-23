@@ -40,13 +40,20 @@
 <script>
 export default {
   props: {
-    forum: { type: Object, required: true },
+    forumId: { type: String, required: true },
   },
   data() {
     return {
       title: "",
       text: "",
     };
+  },
+  computed: {
+    forum() {
+      return this.$store.state.forums.find(
+        (forum) => forum.id === this.forumId
+      );
+    },
   },
   methods: {
     async save() {
