@@ -27,7 +27,9 @@
       <button class="btn btn-ghost" @click.prevent="$emit('cancel')">
         Cancel
       </button>
-      <button class="btn btn-blue" type="submit" name="Publish">Publish</button>
+      <button class="btn btn-blue" type="submit" name="Publish">
+        {{ existing ? "Update" : "Publish" }}
+      </button>
     </div>
   </form>
 </template>
@@ -44,6 +46,11 @@ export default {
   props: {
     title: { type: String, default: "" },
     text: { type: String, default: "" },
+  },
+  computed: {
+    existing() {
+      return !!this.title;
+    },
   },
   methods: {
     save() {
