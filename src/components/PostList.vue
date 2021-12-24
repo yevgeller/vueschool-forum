@@ -29,6 +29,7 @@
   </div>
 </template>
 <script>
+import { findById } from "@/helpers";
 export default {
   props: {
     posts: {
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     userById(userId) {
-      return this.users.find((p) => p.id === userId);
+      return findById(this.users, userId);
     },
   },
 };
