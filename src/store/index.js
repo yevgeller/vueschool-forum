@@ -5,24 +5,29 @@ import { findById, upsert } from "@/helpers";
 export default createStore({
   state: { ...sourceData, authId: "VXjpr2WHa8Ux4Bnggym8QFLdv5C3" },
   getters: {
-    authUser: (state) => {
-      const user = findById(state.users, state.authId);
-      if (!user) return null;
-      return {
-        ...user,
+    authUser: (state, getters) => {
+      return getters.user(state.authId);
+    },
+    user: (state) => {
+      return (id) => {
+        const user = findById(state.users, id);
+        if (!user) return null;
+        return {
+          ...user,
 
-        get postsCount() {
-          return this.posts.length;
-        },
-        get posts() {
-          return state.posts.filter((post) => post.userId === user.id);
-        },
-        get threadsCount() {
-          return this.threads.length;
-        },
-        get threads() {
-          return state.threads.filter((post) => post.userId === user.id);
-        },
+          get postsCount() {
+            return this.posts.length;
+          },
+          get posts() {
+            return state.posts.filter((post) => post.userId === user.id);
+          },
+          get threadsCount() {
+            return this.threads.length;
+          },
+          get threads() {
+            return state.threads.filter((post) => post.userId === user.id);
+          },
+        };
       };
     },
     thread: (state) => {
