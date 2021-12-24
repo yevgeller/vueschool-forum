@@ -10,7 +10,17 @@
         Edit Thread
       </router-link>
     </h1>
+    <p>
+      By<a href="#" class="link-unstyled">{{ thread.author.name }}</a
+      >,<app-date :timestamp="thread.publishedAt" />
 
+      <span
+        style="float: right; margin-top: 2px"
+        class="hide-mobile text-faded text-small"
+        >{{ thread.repliesCount }} replies by
+        {{ thread.contributorsCount }} contributors</span
+      >
+    </p>
     <post-list :posts="threadPosts"></post-list>
     <post-editor @save="addPost"></post-editor>
   </div>
@@ -19,13 +29,15 @@
 <script>
 import PostList from "@/components/PostList";
 import PostEditor from "@/components/PostEditor";
-import { findById } from "@/helpers";
+import AppDate from "../components/AppDate.vue";
+//import { findById } from "@/helpers";
 
 export default {
   name: "ThreadShow",
   components: {
     PostList,
     PostEditor,
+    AppDate,
   },
   props: {
     id: {
@@ -35,7 +47,7 @@ export default {
   },
   computed: {
     thread() {
-      return findById(this.threads, this.id); // also available under this.$route.params.id
+      return this.$store.getters.thread(this.id); // findById(this.threads, this.id); // also available under this.$route.params.id
     },
     threadPosts() {
       return this.posts.filter((post) => post.threadId === this.id);
