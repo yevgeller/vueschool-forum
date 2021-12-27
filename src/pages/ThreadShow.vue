@@ -30,8 +30,6 @@
 import PostList from "@/components/PostList";
 import PostEditor from "@/components/PostEditor";
 import AppDate from "../components/AppDate.vue";
-import firebase from "firebase";
-//import { findById } from "@/helpers";
 
 export default {
   name: "ThreadShow",
@@ -74,44 +72,14 @@ export default {
       this.$router.push({ name: "ThreadEdit", params: { id: this.id } });
     },
   },
-  created() {
-    firebase
-      .firestore()
-      .collection("threads")
-      .doc(this.id)
-      .onSnapshot((doc) => {
-        const thread = { ...doc.data(), id: doc.id };
-        this.$store.commit("setThread", { thread });
+  async created() {
+    const thread = await this.$store.dispatch("fetchThread", { id: this.id });
+    this.$store.dispatch("fetchUser", { id: thread.userId });
 
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(thread.userId)
-          .onSnapshot((doc) => {
-            const user = { ...doc.data(), id: doc.id };
-            this.$store.commit("setUser", { user });
-          });
-
-        thread.posts.forEach((postId) => {
-          firebase
-            .firestore()
-            .collection("posts")
-            .doc(postId)
-            .onSnapshot((doc) => {
-              const post = { ...doc.data(), id: doc.id };
-              this.$store.commit("setPost", { post });
-
-              firebase
-                .firestore()
-                .collection("users")
-                .doc(post.userId)
-                .onSnapshot((doc) => {
-                  const user = { ...doc.data(), id: doc.id };
-                  this.$store.commit("setUser", { user });
-                });
-            });
-        });
-      });
+    thread.posts.forEach(async (postId) => {
+      const post = await this.$store.dispatch("fetchPost", { id: postId });
+      this.$store.dispatch("fetchUser", { id: post.userId });
+    });
   },
 };
 </script>
