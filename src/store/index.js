@@ -1,7 +1,6 @@
 import { createStore } from "vuex";
 import { findById, upsert } from "@/helpers";
 import firebase from "firebase";
-
 export default createStore({
   state: {
     categories: [],
@@ -21,18 +20,17 @@ export default createStore({
         if (!user) return null;
         return {
           ...user,
-
-          get postsCount() {
-            return this.posts.length;
-          },
           get posts() {
             return state.posts.filter((post) => post.userId === user.id);
           },
-          get threadsCount() {
-            return this.threads.length;
+          get postsCount() {
+            return this.posts.length;
           },
           get threads() {
             return state.threads.filter((post) => post.userId === user.id);
+          },
+          get threadsCount() {
+            return this.threads.length;
           },
         };
       };
@@ -40,6 +38,7 @@ export default createStore({
     thread: (state) => {
       return (id) => {
         const thread = findById(state.threads, id);
+        if (!thread) return {};
         return {
           ...thread,
           get author() {
@@ -60,11 +59,11 @@ export default createStore({
       post.id = "abcdefghi" + Math.random();
       post.userId = state.authId;
       post.publishedAt = Math.floor(Date.now() / 1000);
-      commit("setITem", { resource: "posts", item: post });
+      commit("setItem", { resource: "posts", item: post }); // set the post
       commit("appendPostToThread", {
         childId: post.id,
         parentId: post.threadId,
-      });
+      }); // append post to thread
       commit("appendContributorToThread", {
         childId: state.authId,
         parentId: post.threadId,
@@ -93,15 +92,27 @@ export default createStore({
     updateUser({ commit }, user) {
       commit("setItem", { resource: "users", item: user });
     },
-    fetchThread({ dispatch }, { id }) {
-      return dispatch("fetchItem", { resource: "threads", id, emoji: "📃" });
+    // ---------------------------------------
+    // Fetch Single Resource
+    // ---------------------------------------
+    fetchCategory({ dispatch }, { id }) {
+      return dispatch("fetchItem", { emoji: "🏷", resource: "categories", id });
     },
-    fetchUser({ dispatch }, { id }) {
-      return dispatch("fetchItem", { resource: "users", id, emoji: "🙋‍♀️" });
+    fetchForum({ dispatch }, { id }) {
+      return dispatch("fetchItem", { emoji: "🏁", resource: "forums", id });
+    },
+    fetchThread({ dispatch }, { id }) {
+      return dispatch("fetchItem", { emoji: "📄", resource: "threads", id });
     },
     fetchPost({ dispatch }, { id }) {
-      return dispatch("fetchItem", { resource: "posts", id, emoji: "💬" });
+      return dispatch("fetchItem", { emoji: "💬", resource: "posts", id });
     },
+    fetchUser({ dispatch }, { id }) {
+      return dispatch("fetchItem", { emoji: "🙋", resource: "users", id });
+    },
+    // ---------------------------------------
+    // Fetch All of a Resource
+    // ---------------------------------------
     fetchAllCategories({ commit }) {
       console.log("🔥", "🏷", "all");
       return new Promise((resolve) => {
@@ -118,31 +129,42 @@ export default createStore({
           });
       });
     },
+    // ---------------------------------------
+    // Fetch Multiple Resources
+    // ---------------------------------------
+    fetchCategories({ dispatch }, { ids }) {
+      return dispatch("fetchItems", {
+        resource: "categories",
+        ids,
+        emoji: "🏷",
+      });
+    },
     fetchForums({ dispatch }, { ids }) {
       return dispatch("fetchItems", { resource: "forums", ids, emoji: "🏁" });
     },
     fetchThreads({ dispatch }, { ids }) {
-      return dispatch("fetchItems", { resource: "threads", ids, emoji: "📃" });
-    },
-    fetchUsers({ dispatch }, { ids }) {
-      return dispatch("fetchItems", { resource: "users", ids, emoji: "🙋‍♀️" });
+      return dispatch("fetchItems", { resource: "threads", ids, emoji: "📄" });
     },
     fetchPosts({ dispatch }, { ids }) {
       return dispatch("fetchItems", { resource: "posts", ids, emoji: "💬" });
     },
+    fetchUsers({ dispatch }, { ids }) {
+      return dispatch("fetchItems", { resource: "users", ids, emoji: "🙋" });
+    },
+
     fetchItem({ commit }, { id, emoji, resource }) {
       console.log("🔥", emoji, id);
-      return new Promise((resolve) =>
+      return new Promise((resolve) => {
         firebase
           .firestore()
           .collection(resource)
           .doc(id)
           .onSnapshot((doc) => {
             const item = { ...doc.data(), id: doc.id };
-            commit("setItem", { resource, id, item });
+            commit("setItem", { resource, item });
             resolve(item);
-          })
-      );
+          });
+      });
     },
     fetchItems({ dispatch }, { ids, resource, emoji }) {
       return Promise.all(
@@ -177,6 +199,7 @@ function makeAppendChildToParentMutation({ parent, child }) {
   return (state, { childId, parentId }) => {
     const resource = findById(state[parent], parentId);
     resource[child] = resource[child] || [];
+
     if (!resource[child].includes(childId)) {
       resource[child].push(childId);
     }
