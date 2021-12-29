@@ -7,9 +7,9 @@
         <div>
           <p>
             <router-link
+              v-if="thread.id"
               :to="{ name: 'ThreadShow', params: { id: thread.id } }"
-            >
-              {{ thread.title }}</router-link
+              >{{ thread.title }}</router-link
             >
           </p>
           <p class="text-faded text-xsmall">
@@ -54,11 +54,11 @@ export default {
     },
   },
   computed: {
-    users() {
-      return this.$store.state.users;
-    },
     posts() {
       return this.$store.state.posts;
+    },
+    users() {
+      return this.$store.state.users;
     },
   },
   methods: {
@@ -66,7 +66,7 @@ export default {
       return findById(this.posts, postId);
     },
     userById(userId) {
-      return findById(this.users, userId);
+      return findById(this.users, userId) || {};
     },
   },
 };
