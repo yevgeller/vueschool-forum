@@ -30,7 +30,7 @@
 import PostList from "@/components/PostList";
 import PostEditor from "@/components/PostEditor";
 import AppDate from "../components/AppDate.vue";
-
+import { mapActions } from "vuex";
 export default {
   name: "ThreadShow",
   components: {
@@ -59,6 +59,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["createPost", "fetchThread", "fetchPosts", "fetchUsers"]),
     addPost(eventData) {
       console.log(eventData);
       const post = {
@@ -66,7 +67,7 @@ export default {
         threadId: this.id,
       };
 
-      this.$store.dispatch("createPost", post);
+      this.createPost(post);
     },
     editThread() {
       this.$router.push({ name: "ThreadEdit", params: { id: this.id } });
@@ -74,16 +75,14 @@ export default {
   },
   async created() {
     //fetch the thread
-    const thread = await this.$store.dispatch("fetchThread", { id: this.id });
-    //fetch the user
-    this.$store.dispatch("fetchUser", { id: thread.userId });
+    const thread = await this.fetchThread({ id: this.id });
     //fetch the posts
-    const posts = await this.$store.dispatch("fetchPosts", {
+    const posts = await this.fetchPosts({
       ids: thread.posts,
     });
     //fetch the users associated with the posts
-    const users = posts.map((post) => post.userId);
-    this.$store.dispatch("fetchUsers", { ids: users });
+    const users = posts.map((post) => post.userId).concat(thread.userId);
+    this.fetchUsers({ ids: users });
   },
 };
 </script>
