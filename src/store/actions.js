@@ -52,6 +52,8 @@ export default {
     dispatch("fetchItem", { emoji: "💬", resource: "posts", id }),
   fetchUser: ({ dispatch }, { id }) =>
     dispatch("fetchItem", { emoji: "🙋", resource: "users", id }),
+  fetchAuthUser: ({ state, dispatch }) =>
+    dispatch("fetchItem", { emoji: "🙋", resource: "users", id: state.authId }),
   // ---------------------------------------
   // Fetch All of a Resource
   // ---------------------------------------
