@@ -36,7 +36,6 @@ export default {
     const userId = state.authId;
     const publishedAt = firebase.firestore.FieldValue.serverTimestamp();
     const threadRef = firebase.firestore().collection("threads").doc();
-
     const thread = { forumId, title, publishedAt, userId, id: threadRef.id };
     const userRef = firebase.firestore().collection("users").doc(userId);
     const forumRef = firebase.firestore().collection("forums").doc(forumId);
@@ -49,7 +48,7 @@ export default {
     batch.update(forumRef, {
       threads: firebase.firestore.FieldValue.arrayUnion(threadRef.id),
     });
-    await batch.commit;
+    await batch.commit();
     const newThread = await threadRef.get();
 
     commit("setItem", {
