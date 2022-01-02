@@ -39,7 +39,7 @@ export default {
     return {
       form: {
         title: this.title,
-        text: this.form,
+        text: this.text,
       },
     };
   },
