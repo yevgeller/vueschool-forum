@@ -8,11 +8,13 @@
           cols="30"
           rows="10"
           class="form-input"
-          v-model="text"
+          v-model="postCopy.text"
         ></textarea>
       </div>
       <div class="form-actions">
-        <button class="btn-blue">Submit post</button>
+        <button class="btn-blue">
+          {{ post.id ? "Update " : "Submit " }} Post
+        </button>
       </div>
     </form>
   </div>
@@ -20,21 +22,16 @@
 
 <script>
 export default {
+  props: { post: { type: Object, default: () => ({ text: null }) } },
   data() {
     return {
-      text: "",
+      postCopy: { ...this.post },
     };
   },
   methods: {
     save() {
-      const post = {
-        text: this.text,
-      };
-      this.$emit("save", { post });
-
-      //   this.posts.push(post);
-      //   this.thread.posts.push(postId);
-      this.text = "";
+      this.$emit("save", { post: this.postCopy });
+      this.postCopy.text = "";
     },
   },
 };
