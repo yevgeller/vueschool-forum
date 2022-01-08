@@ -5,12 +5,12 @@
 
 // Your web app's Firebase configuration
 module.exports = {
-  apiKey: "AIzaSyDSQJy7zSih4ab8L519pKhHXkabw_kaepI",
-  authDomain: "vue-school-forum-b3085.firebaseapp.com",
-  projectId: "vue-school-forum-b3085",
-  storageBucket: "vue-school-forum-b3085.appspot.com",
-  messagingSenderId: "9582836868",
-  appId: "1:9582836868:web:a37c4f3c44a231e13496d1",
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
