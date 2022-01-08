@@ -6,8 +6,10 @@ import Category from "@/pages/Category";
 import NotFound from "@/pages/NotFound";
 import Forum from "@/pages/Forum";
 import Profile from "@/pages/Profile";
+import Register from "@/pages/Register";
 import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store";
+
 // import sourceData from "@/data.json";
 // import { findById } from "@/helpers";
 
@@ -71,6 +73,11 @@ const routes = [
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: NotFound,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
 ];
 
