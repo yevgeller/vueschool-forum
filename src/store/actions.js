@@ -114,7 +114,6 @@ export default {
       username,
       avatar,
     });
-    await dispatch("fetchAuthUser");
   },
   async createUser({ commit }, { id, email, name, username, avatar = null }) {
     const registeredAt = firebase.firestore.FieldValue.serverTimestamp();
