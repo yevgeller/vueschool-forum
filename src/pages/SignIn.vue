@@ -28,12 +28,14 @@
         </div>
 
         <div class="form-actions text-right">
-          <router-link :to="{name: 'Register'}">Create an account?</router-link>
+          <router-link :to="{ name: 'Register' }"
+            >Create an account?</router-link
+          >
         </div>
       </form>
 
       <div class="push-top text-center">
-        <button class="btn-red btn-xsmall">
+        <button class="btn-red btn-xsmall" @click="signInWithGoogle">
           <i class="fa fa-google fa-btn"></i>Sign in with Google
         </button>
       </div>
@@ -41,29 +43,33 @@
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        form: {
-          email: "",
-          password: "",
-        },
-      };
-    },
-    methods: {
-      async signIn() {
-        try {
-          await this.$store.dispatch("signInWithEmailAndPassword", {
-            ...this.form,
-          });
-          this.$router.push("/");
-        } catch (error) {
-          alert(error.message);
-        }
+export default {
+  data() {
+    return {
+      form: {
+        email: "",
+        password: "",
       },
+    };
+  },
+  methods: {
+    async signIn() {
+      try {
+        await this.$store.dispatch("signInWithEmailAndPassword", {
+          ...this.form,
+        });
+        this.$router.push("/");
+      } catch (error) {
+        alert(error.message);
+      }
     },
-    created() {
-      this.$emit("ready");
+    async signInWithGoogle() {
+      await this.$store.dispatch("signInWithGoogle");
+      this.$router.push("/");
     },
-  };
+  },
+  created() {
+    this.$emit("ready");
+  },
+};
 </script>
