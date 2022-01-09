@@ -115,6 +115,13 @@ export default {
       avatar,
     });
   },
+  async signInWithEmailAndPassword(context, { email, password }) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  },
+  async signOut({ commit }) {
+    await firebase.auth().signOut();
+    commit("setAuthId", null);
+  },
   async createUser({ commit }, { id, email, name, username, avatar = null }) {
     const registeredAt = firebase.firestore.FieldValue.serverTimestamp();
     const usernameLower = username.toLowerCase();
@@ -142,10 +149,10 @@ export default {
     dispatch("fetchItem", { emoji: "💬", resource: "posts", id }),
   fetchUser: ({ dispatch }, { id }) =>
     dispatch("fetchItem", { emoji: "🙋", resource: "users", id }),
-  fetchAuthUser: ({ state, dispatch, commit }) => {
+  fetchAuthUser: ({ dispatch, commit }) => {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) return;
-    dispatch("fetchItem", { emoji: "🙋", resource: "users", id: state.authId });
+    dispatch("fetchItem", { emoji: "🙋", resource: "users", id: userId });
     commit("setAuthId", userId);
   },
   // ---------------------------------------

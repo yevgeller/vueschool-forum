@@ -7,6 +7,7 @@ import NotFound from "@/pages/NotFound";
 import Forum from "@/pages/Forum";
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
+import SignIn from "@/pages/SignIn";
 import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store";
 
@@ -79,6 +80,7 @@ const routes = [
     name: "Register",
     component: Register,
   },
+  { path: "/signin", name: "SignIn", component: SignIn },
 ];
 
 const router = createRouter({
