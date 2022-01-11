@@ -9,6 +9,8 @@
       :text="text"
       @save="save"
       @cancel="cancel"
+      @dirty="formIsDirty = true"
+      @clean="formIsDirty = false"
     />
   </div>
 </template>
@@ -35,9 +37,13 @@ export default {
       return post ? post.text : "";
     },
   },
+  data() {
+    return { formIsDirty: false };
+  },
   methods: {
     ...mapActions(["updateThread", "fetchThread", "fetchPost"]),
     async save({ title, text }) {
+      this.$emit("clean");
       const thread = await this.updateThread({
         id: this.id,
         title,
@@ -53,6 +59,15 @@ export default {
     const thread = await this.fetchThread({ id: this.id });
     await this.fetchPost({ id: thread.posts[0] });
     this.asyncDataStatus_fetched();
+  },
+  beforeRouteLeave() {
+    if (this.formIsDirty) {
+      const confirmed = window.confirm(
+        "Are you sure you want to leave? Unsaved changes will be lost!"
+      );
+
+      if (!confirmed) return false;
+    }
   },
 };
 </script>
