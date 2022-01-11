@@ -25,6 +25,9 @@ const routes = [
     name: "Profile",
     component: Profile,
     meta: { toTop: true, smoothScroll: true },
+    beforeEnter() {
+      if (!store.state.authId) return { name: "Home" };
+    },
   },
   {
     path: "/me/edit",

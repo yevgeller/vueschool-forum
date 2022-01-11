@@ -244,7 +244,7 @@ export default {
     state.unsubscribes.forEach((unsubscribe) => unsubscribe());
     commit("clearAllUnsubscribes");
   },
-  async unsubscribeAUthUserSnapshot({ state, commit }) {
+  async unsubscribeAuthUserSnapshot({ state, commit }) {
     if (state.authUserUnsubscribe) {
       state.authUserUnsubscribe();
       commit("setAuthUserUnsubscribe", null);
