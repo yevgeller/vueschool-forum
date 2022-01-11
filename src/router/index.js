@@ -84,6 +84,14 @@ const routes = [
     component: Register,
   },
   { path: "/signin", name: "SignIn", component: SignIn },
+  {
+    path: "/logout",
+    name: "SignOut",
+    async beforeEnter() {
+      await store.dispatch("signOut");
+      return { name: "Home" };
+    },
+  },
 ];
 
 const router = createRouter({
