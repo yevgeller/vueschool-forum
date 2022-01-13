@@ -12,7 +12,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store";
 
 // import sourceData from "@/data.json";
-// import { findById } from "@/helpers";
+import { findById } from "@/helpers";
 
 const routes = [
   {
@@ -39,24 +39,25 @@ const routes = [
     name: "ThreadShow",
     component: ThreadShow,
     props: true,
-    // beforeEnter(to, from, next) {
-    //   //check if thread exists
-    //   const threadExists = findById(sourceData.threads, to.params.id);
-    //   //if exists continue
-    //   if (threadExists) {
-    //     return next();
-    //   } else {
-    //     next({
-    //       name: "NotFound",
-    //       // preserve current path and remove the first char to avoid the target URL starting with `//`
-    //       params: { pathMatch: to.path.substring(1).split("/") },
-    //       // preserve existing query and hash if any
-    //       query: to.query,
-    //       hash: to.hash,
-    //     });
-    //   }
-    //   //if does not exist redirect to not found
-    // },
+    async beforeEnter(to, from, next) {
+      await store.dispatch("fetchThread", { id: to.params.id });
+      //check if thread exists
+      const threadExists = findById(store.state.threads, to.params.id);
+      //if exists continue
+      if (threadExists) {
+        return next();
+      } else {
+        next({
+          name: "NotFound",
+          // preserve current path and remove the first char to avoid the target URL starting with `//`
+          params: { pathMatch: to.path.substring(1).split("/") },
+          // preserve existing query and hash if any
+          query: to.query,
+          hash: to.hash,
+        });
+      }
+      //if does not exist redirect to not found
+    },
   },
   {
     path: "/forum/:forumId/thread/create",
