@@ -31,6 +31,7 @@ const routes = [
     name: "ProfileEdit",
     component: Profile,
     props: { edit: true },
+    meta: { requiresAuth: true },
   },
   { path: "/category/:id", name: "Category", component: Category, props: true },
   { path: "/forum/:id", name: "Forum", component: Forum, props: true },
@@ -64,12 +65,14 @@ const routes = [
     name: "ThreadCreate",
     component: ThreadCreate,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/thread/:id/edit",
     name: "ThreadEdit",
     component: ThreadEdit,
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "/:pathMatch(.*)*",
