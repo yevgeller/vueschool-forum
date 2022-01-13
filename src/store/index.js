@@ -12,6 +12,7 @@ export default createStore({
     authId: "VXjpr2WHa8Ux4Bnggym8QFLdv5C3",
     unsubscribes: [],
     authUserUnsubscribe: null,
+    authObserverUnsubscribe: null,
   },
   actions,
   getters,
