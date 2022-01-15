@@ -155,6 +155,16 @@ export default {
     await firebase.auth().signOut();
     commit("setAuthId", null);
   },
+  async fetchAuthUsersPosts({ commit, state }) {
+    const posts = await firebase
+      .firestore()
+      .collection("posts")
+      .where("userId", "==", state.authId)
+      .get();
+    posts.forEach((item) => {
+      commit("setItem", { resource: "posts", item });
+    });
+  },
   async createUser({ commit }, { id, email, name, username, avatar = null }) {
     const registeredAt = firebase.firestore.FieldValue.serverTimestamp();
     const usernameLower = username.toLowerCase();
