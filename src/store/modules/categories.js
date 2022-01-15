@@ -7,9 +7,17 @@ export default {
   getters: {},
   actions: {
     fetchCategory: ({ dispatch }, { id }) =>
-      dispatch("fetchItem", { emoji: "🏷", resource: "categories", id }),
+      dispatch(
+        "fetchItem",
+        { emoji: "🏷", resource: "categories", id },
+        { root: true }
+      ),
     fetchCategories: ({ dispatch }, { ids }) =>
-      dispatch("fetchItems", { resource: "categories", ids, emoji: "🏷" }),
+      dispatch(
+        "fetchItems",
+        { resource: "categories", ids, emoji: "🏷" },
+        { root: true }
+      ),
     fetchAllCategories({ commit }) {
       console.log("🔥", "🏷", "all");
       return new Promise((resolve) => {
