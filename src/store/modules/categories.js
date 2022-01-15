@@ -19,7 +19,11 @@ export default {
           .onSnapshot((querySnapshot) => {
             const categories = querySnapshot.docs.map((doc) => {
               const item = { id: doc.id, ...doc.data() };
-              commit("setItem", { resource: "categories", item });
+              commit(
+                "setItem",
+                { resource: "categories", item },
+                { root: true }
+              );
               return item;
             });
             resolve(categories);

@@ -15,10 +15,13 @@ export default {
   mixins: [asyncDataStatus],
   computed: {
     categories() {
-      return this.$store.state.categories;
+      return this.$store.state.categories.items;
     },
   },
-  methods: { ...mapActions(["fetchAllCategories", "fetchForums"]) }, //...mapActions({getCats: 'fetchAllCategories', getForums: 'fetchForums'}) },
+  methods: {
+    ...mapActions("categories", ["fetchAllCategories"]),
+    ...mapActions("forums", ["fetchForums"]),
+  }, //...mapActions({getCats: 'fetchAllCategories', getForums: 'fetchForums'}) },
   async created() {
     const categories = await this.fetchAllCategories();
     const forumIds = categories.map((category) => category.forums).flat();
