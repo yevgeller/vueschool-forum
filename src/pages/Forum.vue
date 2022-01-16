@@ -13,7 +13,7 @@
       </router-link>
     </div>
   </div>
-
+  0722
   <div class="col-full push-top">
     <ThreadList :threads="threads" />
   </div>
@@ -34,15 +34,19 @@ export default {
       type: String,
     },
   },
-  methods: { ...mapActions(["fetchForum", "fetchThreads", "fetchUsers"]) },
+  methods: {
+    ...mapActions("forums", ["fetchForum"]),
+    ...mapActions("threads", ["fetchThreads"]),
+    ...mapActions("users", ["fetchUsers"]),
+  },
   computed: {
     forum() {
-      return findById(this.$store.state.forums, this.id);
+      return findById(this.$store.state.forums.items, this.id);
     },
     threads() {
       if (!this.forum) return [];
       return this.forum.threads.map((threadId) =>
-        this.$store.getters.thread(threadId)
+        this.$store.getters["threads/thread"](threadId)
       );
     },
   },
