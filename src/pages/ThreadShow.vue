@@ -60,22 +60,24 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["authUser"]),
+    ...mapGetters("auth", ["authUser"]),
     thread() {
-      return this.$store.getters.thread(this.id); // findById(this.threads, this.id); // also available under this.$route.params.id
+      return this.$store.getters["threads/thread"](this.id); // findById(this.threads, this.id); // also available under this.$route.params.id
     },
     threadPosts() {
       return this.posts.filter((post) => post.threadId === this.id);
     },
     threads() {
-      return this.$store.state.threads;
+      return this.$store.state.threads.items;
     },
     posts() {
-      return this.$store.state.posts;
+      return this.$store.state.posts.items;
     },
   },
   methods: {
-    ...mapActions(["createPost", "fetchThread", "fetchPosts", "fetchUsers"]),
+    ...mapActions("posts", ["createPost", "fetchPosts"]),
+    ...mapActions("threads", ["fetchThread"]),
+    ...mapActions("users", ["fetchUsers"]),
     addPost(eventData) {
       console.log(eventData);
       const post = {
