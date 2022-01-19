@@ -1,5 +1,9 @@
 <template>
-  <header class="header" id="header">
+  <header
+    class="header"
+    id="header"
+    v-click-outside="() => (mobileNavMenu = false)"
+  >
     <router-link :to="{ name: 'Home' }" class="logo">
       <img src="../assets/svg/vueschool-logo.svg" />
     </router-link>
@@ -46,7 +50,13 @@
               </li>
 
               <li class="dropdown-menu-item">
-                <a @click.prevent="$store.dispatch('auth/signOut')">Sign Out</a>
+                <a
+                  @click.prevent="
+                    $store.dispatch('auth/signOut'),
+                      $router.push({ name: 'Home' })
+                  "
+                  >Sign Out</a
+                >
               </li>
             </ul>
           </div>
@@ -61,7 +71,12 @@
           <router-link :to="{ name: 'Profile' }">View Profile</router-link>
         </li>
         <li v-if="authUser" class="navbar-mobile-item">
-          <a @click.prevent="$store.dispatch('auth/signOut')">Sign Out</a>
+          <a
+            @click.prevent="
+              $store.dispatch('auth/signOut'), $router.push({ name: 'Home' })
+            "
+            >Sign Out</a
+          >
         </li>
       </ul>
     </nav>
@@ -76,6 +91,11 @@ export default {
   },
   computed: {
     ...mapGetters("auth", ["authUser"]),
+  },
+  created() {
+    this.$router.beforeEach(() => {
+      this.mobileNavMenu = false;
+    });
   },
 };
 </script>
