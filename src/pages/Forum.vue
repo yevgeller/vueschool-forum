@@ -16,6 +16,12 @@
   0722
   <div class="col-full push-top">
     <ThreadList :threads="threads" />
+    <v-pagination
+      v-model="page"
+      :pages="totalPages"
+      active-color="#57AD8D"
+      @update:modelValue="updateHandler"
+    />
   </div>
 </template>
 
@@ -34,6 +40,12 @@ export default {
       type: String,
     },
   },
+  data() {
+    return {
+      page: 1,
+      perPage: 10,
+    };
+  },
   methods: {
     ...mapActions("forums", ["fetchForum"]),
     ...mapActions("threads", ["fetchThreads"]),
@@ -48,6 +60,13 @@ export default {
       return this.forum.threads.map((threadId) =>
         this.$store.getters["threads/thread"](threadId)
       );
+    },
+    threadCount() {
+      return this.forum.threads.length;
+    },
+    totalPages() {
+      if (!this.threadCount) return 0;
+      return Math.ceil(this.threadCount / this.perPage);
     },
   },
   async created() {
