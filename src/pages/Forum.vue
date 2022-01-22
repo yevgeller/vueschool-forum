@@ -1,26 +1,29 @@
 <template>
-  <div v-if="asyncDataStatus_ready" class="col-full push-top">
-    <div class="forum-header">
-      <div class="forum-details">
-        <h1>{{ forum.name }}</h1>
-        <p class="text-lead">{{ forum.description }}</p>
+  <div v-if="asyncDataStatus_ready" class="col-full">
+    <div v-if="forum" class="col-full push-top">
+      <div class="forum-header">
+        <div class="forum-details">
+          <h1>{{ forum.name }}</h1>
+          <p class="text-lead">{{ forum.description }}</p>
+        </div>
+        <router-link
+          :to="{ name: 'ThreadCreate', params: { forumId: forum.id } }"
+          class="btn-green btn-small"
+        >
+          Start a thread
+        </router-link>
       </div>
-      <router-link
-        :to="{ name: 'ThreadCreate', params: { forumId: forum.id } }"
-        class="btn-green btn-small"
-      >
-        Start a thread
-      </router-link>
     </div>
-  </div>
-  <div class="col-full push-top">
-    <ThreadList :threads="threads" />
-    <v-pagination
-      v-model="page"
-      :pages="totalPages"
-      active-color="#57AD8D"
-      @update:modelValue="updateHandler"
-    />
+
+    <div class="col-full push-top">
+      <ThreadList :threads="threads" />
+      <v-pagination
+        v-model="page"
+        :pages="totalPages"
+        active-color="#57AD8D"
+        @update:modelValue="updateHandler"
+      />
+    </div>
   </div>
 </template>
 
@@ -29,7 +32,6 @@ import ThreadList from "@/components/ThreadList";
 import { findById } from "@/helpers";
 import { mapActions } from "vuex";
 import asyncDataStatus from "@/mixins/asyncDataStatus";
-
 export default {
   components: { ThreadList },
   mixins: [asyncDataStatus],
@@ -41,14 +43,9 @@ export default {
   },
   data() {
     return {
-      page: 1,
-      perPage: 3,
+      page: parseInt(this.$route.query.page) || 1,
+      perPage: 10,
     };
-  },
-  methods: {
-    ...mapActions("forums", ["fetchForum"]),
-    ...mapActions("threads", ["fetchThreadsByPage"]),
-    ...mapActions("users", ["fetchUsers"]),
   },
   computed: {
     forum() {
@@ -68,6 +65,11 @@ export default {
       return Math.ceil(this.threadCount / this.perPage);
     },
   },
+  methods: {
+    ...mapActions("forums", ["fetchForum"]),
+    ...mapActions("threads", ["fetchThreadsByPage"]),
+    ...mapActions("users", ["fetchUsers"]),
+  },
   async created() {
     const forum = await this.fetchForum({ id: this.id });
     const threads = await this.fetchThreadsByPage({
@@ -75,19 +77,12 @@ export default {
       page: this.page,
       perPage: this.perPage,
     });
-    await this.fetchUsers({
-      ids: threads.map((thread) => thread.userId),
-    });
+    await this.fetchUsers({ ids: threads.map((thread) => thread.userId) });
     this.asyncDataStatus_fetched();
   },
   watch: {
     async page() {
-      const threads = await this.fetchThreadsByPage({
-        ids: this.forum.threads,
-        page: this.page,
-        perPage: this.perPage,
-      });
-      await this.fetchUsers({ ids: threads.map((thread) => thread.userId) });
+      this.$router.push({ query: { page: this.page } });
     },
   },
 };
