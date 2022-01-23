@@ -2,7 +2,7 @@ import firebase from "firebase";
 import { findById } from "@/helpers";
 export default {
   fetchItem(
-    { commit },
+    { state, commit },
     {
       id,
       emoji,
@@ -26,7 +26,8 @@ export default {
             previousItem = previousItem ? { ...previousItem } : null;
             commit("setItem", { resource, item });
             if (typeof onSnapshot === "function") {
-              onSnapshot({ item: { ...item }, previousItem });
+              const isLocal = doc.metadata.hasPendingWrites;
+              onSnapshot({ item: { ...item }, previousItem, isLocal });
             }
             resolve(item);
           } else {
