@@ -59,7 +59,8 @@ export default {
     },
   },
   setup() {
-    //const { addNotification } = useNotifications();
+    const { addNotification } = useNotifications();
+    return { addNotification };
   },
   computed: {
     ...mapGetters("auth", ["authUser"]),
@@ -90,7 +91,12 @@ export default {
   },
   async created() {
     // fetch the thread
-    const thread = await this.fetchThread({ id: this.id });
+    const thread = await this.fetchThread({
+      id: this.id,
+      onSnapshot: () => {
+        this.addNotification({ message: "Thread recently updated" });
+      },
+    });
     // fetch the posts
     const posts = await this.fetchPosts({ ids: thread.posts });
     // fetch the users associated with the posts
