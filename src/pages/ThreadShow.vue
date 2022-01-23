@@ -12,9 +12,8 @@
       </router-link>
     </h1>
     <p>
-      By<a href="#" class="link-unstyled">{{ thread.author?.name }}</a
-      >,<app-date :timestamp="thread.publishedAt" />
-
+      By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a
+      >, <AppDate :timestamp="thread.publishedAt" />.
       <span
         style="float: right; margin-top: 2px"
         class="hide-mobile text-faded text-small"
@@ -22,8 +21,10 @@
         {{ thread.contributorsCount }} contributors</span
       >
     </p>
-    <post-list :posts="threadPosts"></post-list>
-    <post-editor v-if="authUser" @save="addPost"></post-editor>
+
+    <post-list :posts="threadPosts" />
+
+    <post-editor v-if="authUser" @save="addPost" />
     <div v-else class="text-center" style="margin-bottom: 50px">
       <router-link :to="{ name: 'SignIn', query: { redirectTo: $route.path } }"
         >Sign In</router-link
@@ -41,64 +42,58 @@
 <script>
 import PostList from "@/components/PostList";
 import PostEditor from "@/components/PostEditor";
-import AppDate from "../components/AppDate.vue";
 import { mapActions, mapGetters } from "vuex";
 import asyncDataStatus from "@/mixins/asyncDataStatus";
-
+//import useNotifications from "@/composables/useNotifications";
 export default {
   name: "ThreadShow",
-  mixins: [asyncDataStatus],
   components: {
     PostList,
     PostEditor,
-    AppDate,
   },
+  mixins: [asyncDataStatus],
   props: {
     id: {
       required: true,
       type: String,
     },
   },
+  setup() {
+    //const { addNotification } = useNotifications();
+  },
   computed: {
     ...mapGetters("auth", ["authUser"]),
-    thread() {
-      return this.$store.getters["threads/thread"](this.id); // findById(this.threads, this.id); // also available under this.$route.params.id
-    },
-    threadPosts() {
-      return this.posts.filter((post) => post.threadId === this.id);
-    },
     threads() {
       return this.$store.state.threads.items;
     },
     posts() {
       return this.$store.state.posts.items;
     },
+    thread() {
+      return this.$store.getters["threads/thread"](this.id);
+    },
+    threadPosts() {
+      return this.posts.filter((post) => post.threadId === this.id);
+    },
   },
   methods: {
-    ...mapActions("posts", ["createPost", "fetchPosts"]),
     ...mapActions("threads", ["fetchThread"]),
     ...mapActions("users", ["fetchUsers"]),
+    ...mapActions("posts", ["fetchPosts", "createPost"]),
     addPost(eventData) {
-      console.log(eventData);
       const post = {
         ...eventData.post,
         threadId: this.id,
       };
-
       this.createPost(post);
-    },
-    editThread() {
-      this.$router.push({ name: "ThreadEdit", params: { id: this.id } });
     },
   },
   async created() {
-    //fetch the thread
+    // fetch the thread
     const thread = await this.fetchThread({ id: this.id });
-    //fetch the posts
-    const posts = await this.fetchPosts({
-      ids: thread.posts,
-    });
-    //fetch the users associated with the posts
+    // fetch the posts
+    const posts = await this.fetchPosts({ ids: thread.posts });
+    // fetch the users associated with the posts
     const users = posts.map((post) => post.userId).concat(thread.userId);
     await this.fetchUsers({ ids: users });
     this.asyncDataStatus_fetched();
