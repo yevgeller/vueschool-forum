@@ -1,5 +1,4 @@
-
-  <template>
+<template>
   <div class="flex-grid justify-center">
     <div class="col-2">
       <form @submit.prevent="register" class="card card-form">
@@ -41,12 +40,19 @@
         </div>
 
         <div class="form-group">
-          <label for="avatar">Avatar</label>
+          <label for="avatar">
+            Avatar
+            <div v-if="avatarPreview">
+              <img :src="avatarPreview" class="avatar-xlarge" />
+            </div>
+          </label>
           <input
-            v-model="form.avatar"
+            v-show="!avatarPreview"
             id="avatar"
-            type="text"
+            type="file"
             class="form-input"
+            @change="handleImageUpload"
+            accept="image/*"
           />
         </div>
 
@@ -55,7 +61,7 @@
         </div>
       </form>
       <div class="text-center push-top">
-        <button class="btn-red btn-xsmall" @click="registerWithGoogle">
+        <button @click="registerWithGoogle" class="btn-red btn-xsmall">
           <i class="fa fa-google fa-btn"></i>Sign up with Google
         </button>
       </div>
@@ -66,6 +72,7 @@
 export default {
   data() {
     return {
+      avatarPreview: null,
       form: {
         name: "",
         username: "",
@@ -81,12 +88,19 @@ export default {
         "auth/registerUserWithEmailAndPassword",
         this.form
       );
-      console.log("submitting form", this.form);
       this.$router.push("/");
     },
     async registerWithGoogle() {
       await this.$store.dispatch("auth/signInWithGoogle");
       this.$router.push("/");
+    },
+    handleImageUpload(e) {
+      this.form.avatar = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        this.avatarPreview = event.target.result;
+      };
+      reader.readAsDataURL(this.form.avatar);
     },
   },
   created() {
