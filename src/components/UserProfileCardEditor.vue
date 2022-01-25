@@ -2,11 +2,20 @@
   <div class="profile-card">
     <form @submit.prevent="save">
       <p class="text-center">
-        <img
-          :src="user.avatar"
-          :alt="`${user.name} profile picture`"
-          class="avatar-xlarge img-update"
-        />
+        <label for="avatar">
+          <img
+            :src="user.avatar"
+            :alt="`${user.name} profile picture`"
+            class="avatar-xlarge img-update"
+          />
+          <input
+            v-show="false"
+            type="file"
+            id="avatar"
+            accept="image/*"
+            @change="handleAvatarUpload"
+          />
+        </label>
       </p>
 
       <div class="form-group">
