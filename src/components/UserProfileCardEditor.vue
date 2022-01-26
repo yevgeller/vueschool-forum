@@ -1,13 +1,21 @@
 <template>
   <div class="profile-card">
     <form @submit.prevent="save">
-      <p class="text-center">
+      <p class="text-center avatar-edit">
         <label for="avatar">
           <img
             :src="user.avatar"
             :alt="`${user.name} profile picture`"
             class="avatar-xlarge img-update"
           />
+          <div class="avatar-upload-overlay">
+            <fa
+              icon="camera"
+              size="3x"
+              :style="{ color: 'white', opacity: '.8' }"
+            />
+          </div>
+
           <input
             v-show="false"
             type="file"
