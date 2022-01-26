@@ -1,3 +1,12 @@
+<script>
+export default {
+  props: {
+    color: { type: String, default: "263959" },
+  },
+};
+</script>
+
+
 <template>
   <div class="sk-circle">
     <div class="sk-circle1 sk-child"></div>
