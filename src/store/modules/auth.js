@@ -48,13 +48,17 @@ export default {
     async uploadAvatar({ state }, { authId, file }) {
       if (!file) return null;
       authId = authId || state.authId;
-      const storageBucket = firebase
-        .storage()
-        .ref()
-        .child(`uploads/${authId}/images/${Date.now()}-${file.name}`);
-      const snapshot = await storageBucket.put(file);
-      const url = await snapshot.ref.getDownloadURL();
-      return url;
+      try {
+        const storageBucket = firebase
+          .storage()
+          .ref()
+          .child(`uploads/${authId}/images/${Date.now()}-${file.name}`);
+        const snapshot = await storageBucket.put(file);
+        const url = await snapshot.ref.getDownloadURL();
+        return url;
+      } catch (error) {
+        alert("Error uploading image");
+      }
     },
     signInWithEmailAndPassword({ email, password }) {
       return firebase.auth().signInWithEmailAndPassword(email, password);
