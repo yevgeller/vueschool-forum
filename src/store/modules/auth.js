@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import useNotifications from "@/composables/useNotifications";
 export default {
   namespaced: true,
   state: {
@@ -57,7 +58,8 @@ export default {
         const url = await snapshot.ref.getDownloadURL();
         return url;
       } catch (error) {
-        alert("Error uploading image");
+        const { addNotification } = useNotifications();
+        addNotification({ message: "Error uploading image", type: "error" });
       }
     },
     signInWithEmailAndPassword({ email, password }) {

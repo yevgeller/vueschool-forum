@@ -22,7 +22,6 @@
             v-show="false"
             type="file"
             id="avatar"
-            accept="image/*"
             @change="handleAvatarUpload"
           />
         </label>
