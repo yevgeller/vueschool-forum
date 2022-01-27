@@ -4,12 +4,12 @@
       <p class="text-center avatar-edit">
         <label for="avatar">
           <img
-            :src="user.avatar"
+            :src="activeUser.avatar"
             :alt="`${user.name} profile picture`"
             class="avatar-xlarge img-update"
           />
           <div class="avatar-upload-overlay">
-            <app-spinner v-if="uploadingImage" />
+            <app-spinner v-if="uploadingImage" color="white" />
             <fa
               v-else
               icon="camera"
