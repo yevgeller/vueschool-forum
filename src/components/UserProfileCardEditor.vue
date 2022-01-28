@@ -3,8 +3,8 @@
     <form @submit.prevent="save">
       <p class="text-center avatar-edit">
         <label for="avatar">
-          <img
-            :src="activeUser.avatar"
+          <app-avatar-img
+            :src="activeUser.avatar || '/user-placeholder.png'"
             :alt="`${user.name} profile picture`"
             class="avatar-xlarge img-update"
           />
@@ -22,6 +22,7 @@
             v-show="false"
             type="file"
             id="avatar"
+            accept="image/*"
             @change="handleAvatarUpload"
           />
         </label>

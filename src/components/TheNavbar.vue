@@ -24,7 +24,7 @@
             @click.prevent="userDropdownOpen = !userDropdownOpen"
             v-click-outside="() => (userDropdownOpen = false)"
           >
-            <img
+            <app-avatar-img
               class="avatar-small"
               :src="authUser.avatar"
               :alt="`${authUser.name} profile picture`"
@@ -86,7 +86,9 @@
 
 <script>
 import { mapGetters } from "vuex";
+import AppAvatarImg from "./AppAvatarImg.vue";
 export default {
+  components: { AppAvatarImg },
   data() {
     return { userDropdownOpen: false, mobileNavMenu: false };
   },
