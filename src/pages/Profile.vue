@@ -39,6 +39,7 @@ export default {
     lastPostFetched() {
       if (this.user.posts.length === 0) return null;
       return this.users.posts[this.users.posts.length - 1];
+      //return this.user.posts[this.user.posts.length - 1];
     },
   },
   async created() {
