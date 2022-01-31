@@ -83,13 +83,7 @@
   </div>
 </template>
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
 export default {
-  components: {
-    VeeForm: Form,
-    VeeField: Field,
-    VeeErrorMessage: ErrorMessage,
-  },
   data() {
     return {
       avatarPreview: null,
