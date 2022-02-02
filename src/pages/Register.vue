@@ -27,7 +27,11 @@
             id="username"
             type="text"
             class="form-input"
-            rules="required|unique"
+            :rules="{
+              required: true,
+              email: true,
+              unique: { collection: 'users', field: 'email' },
+            }"
           />
           <VeeErrorMessage name="username" class="form-error" />
         </div>
@@ -41,7 +45,7 @@
             id="email"
             type="email"
             class="form-input"
-            rules="required|email"
+            rules="required|email|unique:users,email"
           />
           <VeeErrorMessage name="email" class="form-error" />
         </div>

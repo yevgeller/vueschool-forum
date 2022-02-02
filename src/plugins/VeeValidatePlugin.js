@@ -6,11 +6,17 @@ export default (app) => {
   defineRule("required", required);
   defineRule("email", email);
   defineRule("min", min);
-  defineRule("unique", async (value) => {
+  defineRule("unique", async (value, args) => {
+    let collection, field;
+    if (Array.isArray(args)) {
+      [collection, field] = args;
+    } else {
+      ({ collection, field } = args);
+    }
     const querySnapshot = await firebase
       .firestore()
-      .collection("users")
-      .where("username", "==", value)
+      .collection(collection)
+      .where(field, "==", value)
       .get();
     return querySnapshot.empty;
   });
