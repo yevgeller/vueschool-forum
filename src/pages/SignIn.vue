@@ -4,16 +4,18 @@
       <VeeForm @submit="signIn" class="card card-form">
         <h1 class="text-center">Login</h1>
 
-        <app-form-field
-          name="email"
+        <AppFormField
           label="Email"
-          :modelValue="form.email"
+          name="email"
+          type="email"
+          v-model="form.email"
           rules="required|email"
         />
-        <app-form-field
-          name="password"
+        <AppFormField
           label="Password"
-          :modelValue="form.password"
+          name="password"
+          type="password"
+          v-model="form.password"
           rules="required"
         />
 
@@ -29,7 +31,7 @@
       </VeeForm>
 
       <div class="push-top text-center">
-        <button class="btn-red btn-xsmall" @click="signInWithGoogle">
+        <button @click="signInWithGoogle" class="btn-red btn-xsmall">
           <i class="fa fa-google fa-btn"></i>Sign in with Google
         </button>
       </div>
@@ -37,9 +39,7 @@
   </div>
 </template>
 <script>
-import AppFormField from "../components/AppFormField.vue";
 export default {
-  components: { AppFormField },
   data() {
     return {
       form: {
@@ -50,9 +50,14 @@ export default {
   },
   methods: {
     async signIn() {
+      const a = { ...this.form };
+      console.log(this.form.email);
+      console.log(a.email);
+      console.log(a.password);
       try {
         await this.$store.dispatch("auth/signInWithEmailAndPassword", {
-          ...this.form,
+          email: this.form.email,
+          password: this.form.password,
         });
         this.successRedirect();
       } catch (error) {
@@ -64,8 +69,7 @@ export default {
       this.successRedirect();
     },
     successRedirect() {
-      console.log("redirecting");
-      const redirectTo = this.$route.redirectTo || { name: "Home" };
+      const redirectTo = this.$route.query.redirectTo || { name: "Home" };
       this.$router.push(redirectTo);
     },
   },
