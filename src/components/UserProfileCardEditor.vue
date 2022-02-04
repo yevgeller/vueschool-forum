@@ -100,10 +100,18 @@ export default {
     return {
       uploadingImage: false,
       activeUser: { ...this.user },
+      locationOptions: [],
     };
+  },
+  created() {
+    this.loadLocationOptions();
   },
   methods: {
     ...mapActions("auth", ["uploadAvatar"]),
+    async loadLocationOptions() {
+      const res = await fetch("https://restcountries.com/v3/all");
+      this.locationOptions = await res.json();
+    },
     async handleAvatarUpload(e) {
       this.uploadingImage = true;
       const file = e.target.files[0];
