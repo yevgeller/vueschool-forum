@@ -63,7 +63,9 @@ export default {
         addNotification({ message: "Error uploading image", type: "error" });
       }
     },
-    signInWithEmailAndPassword({ email, password }) {
+    // eslint-disable-next-line no-unused-vars
+    signInWithEmailAndPassword(context, { email, password }) {
+      debugger;
       return firebase.auth().signInWithEmailAndPassword(email, password);
     },
     async signInWithGoogle({ dispatch }) {
