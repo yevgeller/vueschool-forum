@@ -1,6 +1,6 @@
 <template>
   <div class="profile-card">
-    <form @submit.prevent="save">
+    <VeeForm @submit="save">
       <p class="text-center avatar-edit">
         <label for="avatar">
           <app-avatar-img
@@ -30,33 +30,28 @@
       <user-profile-card-editor-random-avatar
         @hit="activeUser.avatar = $event"
       />
-      <div class="form-group">
-        <input
-          v-model="activeUser.username"
-          type="text"
-          placeholder="Username"
-          class="form-input text-lead text-bold"
-        />
-      </div>
+      <AppFormField
+        placeholder="Username"
+        name="username"
+        v-model="activeUser.username"
+        rules="required"
+      />
 
-      <div class="form-group">
-        <input
-          v-model="activeUser.name"
-          type="text"
-          placeholder="Full Name"
-          class="form-input text-lead"
-        />
-      </div>
+      <AppFormField
+        placeholder="Full Name"
+        name="fullname"
+        v-model="activeUser.fullname"
+        rules="required"
+      />
 
-      <div class="form-group">
-        <label for="user_bio">Bio</label>
-        <textarea
-          v-model="activeUser.bio"
-          class="form-input"
-          id="user_bio"
-          placeholder="Write a few words about yourself."
-        ></textarea>
-      </div>
+      <AppFormField
+        label="Bio"
+        as="textarea"
+        name="text"
+        v-model="activeUser.bio"
+        id="user_bio"
+        placeholder="Write a few words about yourself."
+      />
 
       <div class="stats">
         <span>{{ user.postsCount }} posts</span>
@@ -99,7 +94,7 @@
         <button class="btn-ghost" @click.prevent="cancel">Cancel</button>
         <button type="submit" class="btn-blue">Save</button>
       </div>
-    </form>
+    </VeeForm>
   </div>
 </template>
 
