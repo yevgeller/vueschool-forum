@@ -75,7 +75,16 @@
         label="Location"
         name="location"
         v-model="activeUser.location"
+        list="location"
       />
+
+      <datalist id="location">
+        <option
+          v-for="location in locationOptions"
+          :value="location.name.common"
+          :key="location.name.common"
+        />
+      </datalist>
 
       <div class="btn-group space-between">
         <button class="btn-ghost" @click.prevent="cancel">Cancel</button>
