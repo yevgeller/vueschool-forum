@@ -76,6 +76,7 @@
         name="location"
         v-model="activeUser.location"
         list="location"
+        @mouseenter="loadLocationOptions"
       />
 
       <datalist id="location">
@@ -112,12 +113,10 @@ export default {
       locationOptions: [],
     };
   },
-  created() {
-    this.loadLocationOptions();
-  },
   methods: {
     ...mapActions("auth", ["uploadAvatar"]),
     async loadLocationOptions() {
+      if (this.locationOptions.length) return;
       const res = await fetch("https://restcountries.com/v3/all");
       this.locationOptions = await res.json();
     },
