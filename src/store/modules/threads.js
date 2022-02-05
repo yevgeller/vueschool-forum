@@ -76,7 +76,7 @@ export default {
       );
       await dispatch(
         "posts/createPost",
-        { text, threadId: threadRef.id },
+        { text, threadId: threadRef.id, firstInThread: true },
         { root: true }
       );
       return findById(state.items, threadRef.id);
