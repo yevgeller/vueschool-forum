@@ -53,4 +53,7 @@ export default {
     state.unsubscribes.forEach((unsubscribe) => unsubscribe());
     commit("clearAllUnsubscribes");
   },
+  clearItems({ commit }, { modules = [] }) {
+    commit("clearItems", { modules });
+  },
 };
