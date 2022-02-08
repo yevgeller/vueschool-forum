@@ -141,8 +141,11 @@ export default {
     },
     async save() {
       await this.handleRandomAvatarUpload();
-      this.$store.dispatch("users/updateUser", {
+      await this.$store.dispatch("users/updateUser", {
         ...this.activeUser.threadIds,
+      });
+      await this.$store.dispatch("auth/updateEmail", {
+        email: this.activeUser.email,
       });
       this.$router.push({ name: "Profile" });
     },
