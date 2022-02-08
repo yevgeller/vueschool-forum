@@ -5,14 +5,14 @@ export default {
     { state, commit },
     {
       id,
-      emoji,
+      //emoji,
       resource,
       handleUnsubscribe = null,
       once = false,
       onSnapshot = null,
     }
   ) {
-    console.log("🔥", emoji, id);
+    //console.log("🔥", emoji, id);
     return new Promise((resolve) => {
       const unsubscribe = firebase
         .firestore()

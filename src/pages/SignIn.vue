@@ -50,10 +50,6 @@ export default {
   },
   methods: {
     async signIn() {
-      const a = { ...this.form };
-      console.log(this.form.email);
-      console.log(a.email);
-      console.log(a.password);
       try {
         await this.$store.dispatch("auth/signInWithEmailAndPassword", {
           email: this.form.email,

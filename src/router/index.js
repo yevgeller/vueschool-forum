@@ -121,9 +121,8 @@ router.afterEach(() => {
   });
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   await store.dispatch("auth/initAuthentication");
-  console.log(`🚦 navigating to ${to.name} from ${from.name}`);
   store.dispatch("unsubscribeAllSnapshots");
   if (to.meta.requiresAuth && !store.state.auth.authId) {
     return { name: "SignIn", query: { redirectTo: to.path } };
