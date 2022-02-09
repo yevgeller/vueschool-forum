@@ -1,5 +1,5 @@
 <template>
-  <VeeForm>
+  <VeeForm @submit="reauthenticate">
     <AppFormField
       name="reauth-email"
       label="Email"
@@ -19,6 +19,19 @@
 export default {
   data() {
     return { email: "", password: "" };
+  },
+  methods: {
+    async reauthenticate() {
+      try {
+        await this.$store.dispatch("auth/reauthenticate", {
+          email: this.email,
+          password: this.password,
+        });
+        this.$emit("success");
+      } catch (error) {
+        this.$emit("fail", error);
+      }
+    },
   },
 };
 </script>
