@@ -118,7 +118,7 @@ export default {
   },
   setup() {
     const { addNotification } = useNotifications();
-    return addNotification;
+    return { addNotification };
   },
   data() {
     return {
